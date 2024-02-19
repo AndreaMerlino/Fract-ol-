@@ -6,7 +6,7 @@
 /*   By: andreamerlino <andreamerlino@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/15 11:16:14 by andreamerli       #+#    #+#             */
-/*   Updated: 2024/02/17 12:51:06 by andreamerli      ###   ########.fr       */
+/*   Updated: 2024/02/18 18:33:35 by andreamerli      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@
 # define NEON_CYAN 0x00FFFF
 # define ALTEZZA 1500
 # define LARGHEZZA 1500
+# define ERROR_MESSAGE "Wrong input try: ./fractal and just Mandelbrot,or"
 
 typedef struct s_img
 {
@@ -49,6 +50,8 @@ typedef struct s_img
 
 typedef struct s_data
 {
+	int		*x;
+	int		xy;
 	void	*mlx_ptr;
 	void	*win_ptr;
 	double	zoom;
@@ -60,6 +63,7 @@ typedef struct s_data
 	double	updown;
 	int		argc_copia;
 	int		color[16];
+	int		burning_ship;
 	t_img	img;
 }	t_data;
 
@@ -86,6 +90,16 @@ typedef struct s_atod
 	char	*p;
 }	t_atod;
 
+enum {
+	ON_KEYDOWN = 2,
+	ON_KEYUP = 3,
+	ON_MOUSEDOWN = 4,
+	ON_MOUSEUP = 5,
+	ON_MOUSEMOVE = 6,
+	ON_EXPOSE = 12,
+	ON_DESTROY = 17
+};
+
 int		madlebrot_calculation(t_fract *fract, t_data *data);
 int		mouse_handler(int button, int x, int y, t_data *data);
 int		handle_input(int keysym, t_data *data);
@@ -95,5 +109,8 @@ double	linear_interpolation(double unscaled_num, double new_min,
 void	img_pix_put(t_img *img, int x, int y, int color);
 void	render_mandelbrot(t_data *data);
 void	set_colors(t_data *data);
+void	color_iteration(t_data *data);
+void	erorr(void);
+void	burning_ship(t_fract *fract);
 
 #endif

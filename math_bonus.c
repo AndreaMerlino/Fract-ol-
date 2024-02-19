@@ -6,16 +6,19 @@
 /*   By: andreamerlino <andreamerlino@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 19:27:56 by andreamerli       #+#    #+#             */
-/*   Updated: 2024/02/17 12:10:38 by andreamerli      ###   ########.fr       */
+/*   Updated: 2024/02/18 13:50:27 by andreamerli      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fractol.h"
 
-double	linear_interpolation(double unscaled_num, double new_min,
-	double new_max, double old_max)
+int	fractal_map_render(t_data *data, t_fract *fract, int i)
 {
-	return ((new_max - new_min) * (unscaled_num - 0) / (old_max - 0) + new_min);
+	fract->color = linear_interpolation(i, BLACK, WHITE,
+			data->iteration);
+	img_pix_put(&data->img, fract->c[0], fract->c[1], fract->color);
+	i = data->iteration +2;
+	return (i);
 }
 
 static void	mandelbrot_or_julia(t_fract *fract, t_data *data)
@@ -46,6 +49,8 @@ int	madlebrot_calculation(t_fract *fract, t_data *data)
 	mandelbrot_or_julia(fract, data);
 	while (i <= data->iteration)
 	{
+		if (data->burning_ship == 2)
+			burning_ship(fract);
 		fract->x_square = fract->x * fract->x;
 		fract->xy = fract->x * fract->y * 2;
 		fract->y_square = fract->y * fract->y * -1;
@@ -55,10 +60,7 @@ int	madlebrot_calculation(t_fract *fract, t_data *data)
 		fract->y = fract->y + fract->c_double[1];
 		if (fract->x < -2 || fract->x > 2 || fract->y < -2 || fract->y > 2)
 		{
-			fract->color = linear_interpolation(i, BLACK, WHITE,
-					data->iteration);
-			img_pix_put(&data->img, fract->c[0], fract->c[1], fract->color);
-			i = data->iteration +2;
+			i = fractal_map_render(data, fract, i);
 			break ;
 		}
 		i++;

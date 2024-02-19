@@ -6,7 +6,7 @@
 /*   By: andreamerlino <andreamerlino@student.42    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/14 16:54:46 by andreamerli       #+#    #+#             */
-/*   Updated: 2024/02/17 12:48:54 by andreamerli      ###   ########.fr       */
+/*   Updated: 2024/02/18 18:35:54 by andreamerli      ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,7 @@ void	main_init(t_data *data)
 		data->img.mlx_img, 0, 0);
 	mlx_key_hook(data->win_ptr, &handle_input, data);
 	mlx_mouse_hook (data->win_ptr, mouse_handler, data);
+		mlx_mouse_get_pos(data->win_ptr, &data->x, &data->xy);
 }
 
 int	main(int argc, char **argv)
@@ -95,6 +96,7 @@ int	main(int argc, char **argv)
 	t_data	data;
 
 	if ((argc == 2 && ft_strncmp(argv[1], "Mandelbrot", 10) == 0)
+		|| (argc == 2 && ft_strncmp(argv[1], "BurningShip", 11) == 0)
 		|| (argc == 4 && ft_strncmp(argv[1], "Julia", 5) == 0))
 	{
 		if (argc == 4)
@@ -103,18 +105,16 @@ int	main(int argc, char **argv)
 			data.julia_y = atod(argv[3]);
 			if (data.julia_x >= 2 || data.julia_x <= -2
 				|| data.julia_y >= 2 || data.julia_y <= -2)
-			{
-				perror("\n Wrong input for julia try : −0.7269 +0.1889 or try"
-					" −0.8 +0.156 or  0.285 +0.01");
-				exit(EXIT_FAILURE);
-			}
+				erorr();
 		}
+		else if (argc == 2 && ft_strncmp(argv[1], "BurningShip", 11) == 0)
+			data.burning_ship = 2;
 		data.argc_copia = argc;
 		main_init(&data);
 		mlx_loop(data.mlx_ptr);
 	}
 	else
-		perror("Wrong input it shoul be : ./fractal and just Mandelbrot,or ./"
-			"fractal Julia followed by the real and immaginary component");
+		perror(ERROR_MESSAGE "./fractal Julia followed by the"
+			" real and immaginary component");
 	exit(EXIT_FAILURE);
 }
