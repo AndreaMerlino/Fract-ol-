@@ -6,7 +6,7 @@ OBJS := main.o math.o event.o
 MINILIBX_PATH = ./minilibx_opengl_20191021
 LIBMLX = $(MINILIBX_PATH)/libmlx.a
 
-FLAGS := -Wall -Werror -Wextra -I/opt/X11/include
+FLAGS :=  -I/opt/X11/include
 LDFLAGS := -L$(MINILIBX_PATH) -lmlx -framework OpenGL -framework AppKit
 
 RED = \033[1;31m
